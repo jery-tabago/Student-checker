@@ -44,7 +44,59 @@ input:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline
 .ok .big{font-size:2.4rem}
 dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;text-align:left;background:var(--bg);padding:14px;border-radius:10px;margin:14px 0}
 dt{color:var(--mute)}dd{margin:0;font-weight:600}
-@media (max-width:420px){.grid{grid-template-columns:1fr}}
+:root{--ok:#1f9d55}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ok:#4cd88a}}
+:root[data-theme="dark"]{--ok:#4cd88a}
+.names{display:grid;gap:8px;margin-top:12px;max-height:340px;overflow-y:auto}
+.opt.add{border-style:dashed;color:var(--brand);font-weight:700}
+.who{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px}
+.mrow{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+select{flex:1;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+.dow,.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dow{text-align:center;font-size:.75rem;color:var(--mute);margin-bottom:4px}
+.day{aspect-ratio:1;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0}
+.day small{font-size:.7rem;color:var(--mute)}
+.day i{font-style:normal;font-weight:800;font-size:1.15rem;line-height:1}
+.day.we{background:var(--bg)}
+.day.p{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--card));color:var(--ok)}
+.day.a{border-color:var(--err);background:color-mix(in srgb,var(--err) 16%,var(--card));color:var(--err)}
+.legend{font-size:.85rem;color:var(--mute)}
+.gp{color:var(--ok)}.ra{color:var(--err)}
+.stat{font-weight:600}
+.gr{display:grid;grid-template-columns:1fr 62px 76px 32px;gap:6px;margin-bottom:8px}
+.gr input{padding:9px 8px}
+.x{border:0;background:none;color:var(--err);font-size:1.3rem;cursor:pointer}
+.gwa{margin-top:14px;padding:16px;border-radius:10px;background:var(--sel);text-align:center}
+.gwa b{display:block;font-size:2.4rem;line-height:1.1}
+.nrow{display:flex;gap:6px;align-items:stretch}
+.nrow .opt,.nrow input{flex:1;min-width:0}
+.sm{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:0 12px;font:inherit;cursor:pointer}
+.sm.del{color:var(--err)}
+.tabs button{padding:9px 4px;font-size:.9rem}
+.addrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.addrow input{width:auto;flex:1 1 110px}
+.addrow #tt,.addrow #ss{flex:2 1 170px}
+.addrow select{flex:1 1 120px}
+.addrow .sm{padding:10px 18px;background:var(--brand);color:var(--brand-ink);border-color:var(--brand);font-weight:700}
+.task{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid var(--line)}
+.task span{flex:1;min-width:0}
+.task small{color:var(--mute);margin-left:6px}
+.task small.late{color:var(--err);font-weight:600}
+.task input{width:auto}
+.task.fin span{text-decoration:line-through;color:var(--mute)}
+.dh{margin:14px 0 2px;font-size:1rem}
+.dh.today{color:var(--brand)}
+.links{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.lnk{display:inline-block;padding:8px 14px;border-radius:8px;background:var(--brand);color:var(--brand-ink);font-weight:600;text-decoration:none;font-size:.9rem}
+.lnk.off{background:var(--line);color:var(--mute)}
+.book{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 4px;border-bottom:1px solid var(--line)}
+.book div{min-width:0}
+.book b{display:block}
+.book small{display:block;color:var(--mute)}
+.tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--brand)}
+.tabs{overflow-x:auto}
+.tabs button{flex:1 0 auto;padding:9px 10px;white-space:nowrap}
+@media (max-width:420px){.grid{grid-template-columns:1fr}.steps li{font-size:.62rem}}
 </style>
 </head>
 <body>
@@ -56,8 +108,10 @@ dt{color:var(--mute)}dd{margin:0;font-weight:600}
 </div>
 <script>
 var COURSES=[["BSIT","Information Technology"],["BSEd","Education"],["BSCrim","Criminology"],["BSA","Agriculture"],["BSN","Nursing"],["BSBA","Business Administration"],["BSCE","Civil Engineering"],["BSHM","Hospitality Management"],["BSPsy","Psychology"],["BSFi","Fisheries"]];
-var STEP_NAMES=["Account","Welcome","Course","Year & section"];
-var S={step:1,mode:"create",err:"",user:null,course:null,year:null,section:null};
+var STEP_NAMES=["Account","Welcome","Course","Section","Student","Records"];
+var NAMES=["Juan Dela Cruz","Maria Santos","Jose Reyes","Ana Garcia","Pedro Ramos","Liza Mendoza","Carlo Bautista","Grace Aquino","Mark Villanueva","Joy Castillo","Ryan Torres","Kim Navarro","Paolo Flores","Angel Rivera","Jerome Lopez","Mika Domingo","Nico Pascual","Bea Cruz","Leo Soriano","Faith Morales","Dennis Gonzales","Rose Hernandez","Eric Valdez","Jane Salazar"];
+var MO=["January","February","March","April","May","June","July","August","September","October","November","December"];
+var S={step:1,mode:"create",err:"",user:null,course:null,year:null,section:null,student:null,tab:"att",month:new Date().getMonth(),q:""};
 var view=document.getElementById("view");
 
 function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
@@ -75,6 +129,7 @@ function renderSteps(){
 }
 
 function render(){
+  view.onkeydown=null;
   renderSteps();
   var sub=document.getElementById("sub");
   if(S.step===1){
@@ -110,6 +165,18 @@ function render(){
     view.querySelectorAll("[data-s]").forEach(function(b){b.onclick=function(){S.section=b.dataset.s;render()}});
     document.getElementById("next").onclick=finish;
     document.getElementById("back").onclick=function(){S.step=3;render()};
+  }else if(S.step===5){                 // STEP 5: student name
+    sub.textContent="Search and click your name.";
+    view.innerHTML='<p class="pick">'+esc(S.course)+' '+S.year+'-'+S.section+'</p><input id="q" placeholder="Type a name to search or add" value="'+esc(S.q)+'" autocomplete="off" aria-label="Student name"><div id="names" class="names"></div><button class="link" id="back">Back</button>';
+    var qi=document.getElementById("q");qi.oninput=function(){S.q=qi.value;drawNames()};drawNames();
+    document.getElementById("back").onclick=function(){S.step=4;render()};
+  }else if(S.step===6){                 // STEP 6: attendance + GWA
+    sub.textContent="Track attendance and compute your GWA.";
+    view.innerHTML='<div class="who"><div><b>'+esc(S.student)+'</b><br><span class="sub" style="margin:0">'+esc(S.course)+' '+S.year+'-'+S.section+'</span></div><div><button class="link" id="ren">Edit name</button><button class="link" id="chg">Change student</button></div></div><div class="tabs">'+[["att","Attendance"],["gwa","GWA"],["task","Tasks"],["sch","Schedule"],["lib","Library"]].map(function(t){return '<button data-t="'+t[0]+'" aria-selected="'+(S.tab===t[0])+'">'+t[1]+'</button>'}).join("")+'</div><div id="tool"></div>';
+    view.querySelectorAll("[data-t]").forEach(function(b){b.onclick=function(){S.tab=b.dataset.t;render()}});
+    document.getElementById("chg").onclick=function(){S.editing=null;S.step=5;render()};
+    document.getElementById("ren").onclick=function(){S.editing=S.student;S.q="";S.step=5;render()};
+    ({att:drawAtt,gwa:drawGwa,task:drawTasks,sch:drawSch,lib:drawLib})[S.tab]();
   }else{
     sub.textContent="You are all set.";
     var name=(COURSES.filter(function(c){return c[0]===S.course})[0]||[])[1];
@@ -144,179 +211,177 @@ function finish(){
   if(all[S.user]){all[S.user].course=S.course;all[S.user].year=S.year;all[S.user].section=S.section;saveUsers(all)}
   S.step=5;render();
 }
-render();
-</script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Student Helper</title>
-<style>
-:root{--bg:#f5f7fb;--card:#fff;--text:#1d2433;--muted:#667085;--line:#e1e5ee;--accent:#3b6cf6;--ok:#17a34a;--bad:#dc2626;--okbg:#dcfce7;--badbg:#fee2e2;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141c;--card:#1a2030;--text:#e8ecf5;--muted:#9aa4b8;--line:#2b3348;--accent:#6e93ff;--ok:#4ade80;--bad:#f87171;--okbg:#14351f;--badbg:#3b1717;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#10141c;--card:#1a2030;--text:#e8ecf5;--muted:#9aa4b8;--line:#2b3348;--accent:#6e93ff;--ok:#4ade80;--bad:#f87171;--okbg:#14351f;--badbg:#3b1717;color-scheme:dark}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.5}
-.wrap{max-width:760px;margin:0 auto;padding:20px 14px 40px}
-h1{font-size:1.5rem;margin:0 0 4px}
-.sub{color:var(--muted);margin:0 0 16px}
-.tabs{display:flex;gap:8px;margin-bottom:14px}
-.tab{flex:1;padding:12px;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer}
-.tab.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
-.hide{display:none}
-input{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px;width:100%}
-button{font:inherit;cursor:pointer}
-.row{display:grid;grid-template-columns:1fr 80px 80px 40px;gap:8px;margin-bottom:8px;align-items:center}
-.head{font-size:.8rem;color:var(--muted);font-weight:600}
-.btn{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:10px 14px;font-weight:600}
-.btn.alt{background:transparent;color:var(--text);border:1px solid var(--line)}
-.x{background:transparent;border:1px solid var(--line);color:var(--bad);border-radius:8px;height:38px}
-.result{margin-top:16px;padding:16px;border-radius:12px;text-align:center;background:var(--bg);border:1px solid var(--line)}
-.big{font-size:2.6rem;font-weight:800;line-height:1.1}
-.pass{color:var(--ok)}.fail{color:var(--bad)}
-.nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
-.nav h2{margin:0;font-size:1.2rem;text-align:center;flex:1}
-.cal{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
-.dow{text-align:center;font-weight:700;font-size:.8rem;color:var(--muted);padding:4px 0}
-.day{min-height:64px;border:1px solid var(--line);border-radius:10px;padding:4px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:var(--bg)}
-.day.p{background:var(--okbg);border-color:var(--ok)}
-.day.a{background:var(--badbg);border-color:var(--bad)}
-.day.today{outline:2px solid var(--accent)}
-.num{font-size:.8rem;font-weight:700}
-.chk{width:100%;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:6px;font-size:1rem;padding:2px 0}
-.p .chk{background:var(--ok);color:#fff;border-color:var(--ok)}
-.a .chk{background:var(--bad);color:#fff;border-color:var(--bad)}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;text-align:center}
-.stat{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px}
-.stat b{display:block;font-size:1.3rem}.stat span{font-size:.75rem;color:var(--muted)}
-.hint{color:var(--muted);font-size:.85rem;margin-top:10px}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-@media (max-width:480px){.row{grid-template-columns:1fr 64px 64px 36px}.day{min-height:54px}}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <h1>📚 Student Helper</h1>
-  <p class="sub">Compute your general average and track your attendance.</p>
-  <div class="tabs">
-    <button class="tab on" id="t1">General Average</button>
-    <button class="tab" id="t2">Attendance</button>
-  </div>
+function get(k){return load(k,mem[k]||{})}
+function put(k,v){mem[k]=v;save(k,v)}
+function skey(){return S.user+"|"+S.course+S.year+S.section+"|"+S.student}
 
-  <section class="card" id="p1">
-    <div class="row head"><div>Subject</div><div>Grade</div><div>Units</div><div></div></div>
-    <div id="rows"></div>
-    <div class="actions">
-      <button class="btn alt" id="add">+ Add subject</button>
-      <button class="btn" id="calc">Compute average</button>
-      <button class="btn alt" id="clr">Clear</button>
-    </div>
-    <div class="result" id="res">Enter your grades, then press “Compute average”.</div>
-    <p class="hint">Units are the weight of each subject. Leave them at 1 for a simple average. Passing grade is 75.</p>
-  </section>
-
-  <section class="card hide" id="p2">
-    <div class="nav">
-      <button class="btn alt" id="prev">◀</button>
-      <h2 id="mt"></h2>
-      <button class="btn alt" id="next">▶</button>
-    </div>
-    <div class="cal" id="cal"></div>
-    <div class="stats">
-      <div class="stat"><b id="sp">0</b><span>Present</span></div>
-      <div class="stat"><b id="sa">0</b><span>Absent</span></div>
-      <div class="stat"><b id="sd">0</b><span>Marked</span></div>
-      <div class="stat"><b id="sr">0%</b><span>Attendance</span></div>
-    </div>
-    <div class="actions">
-      <button class="btn" id="today">✓ Check today as present</button>
-      <button class="btn alt" id="reset">Reset month</button>
-    </div>
-    <p class="hint">Calendar shows Monday to Saturday. Tap the check button on a day: ✓ present → ✗ absent → clear.</p>
-  </section>
-</div>
-
-<script>
-(function(){
-var $=function(i){return document.getElementById(i)};
-function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
-function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
-
-/* Tabs */
-function show(n){$('p1').classList.toggle('hide',n!==1);$('p2').classList.toggle('hide',n!==2);
-$('t1').classList.toggle('on',n===1);$('t2').classList.toggle('on',n===2)}
-$('t1').onclick=function(){show(1)};$('t2').onclick=function(){show(2)};
-
-/* General average */
-var subs=load('sh_subjects',[{n:'Math',g:'',u:1},{n:'English',g:'',u:1},{n:'Science',g:'',u:1}]);
-function renderRows(){
-  var h='';
-  subs.forEach(function(s,i){
-    h+='<div class="row"><input data-i="'+i+'" data-f="n" placeholder="Subject" value="'+esc(s.n)+'">'+
-    '<input data-i="'+i+'" data-f="g" type="number" min="0" max="100" step="any" inputmode="decimal" placeholder="0-100" value="'+esc(s.g)+'">'+
-    '<input data-i="'+i+'" data-f="u" type="number" min="0" step="any" inputmode="decimal" value="'+esc(s.u)+'">'+
-    '<button class="x" data-del="'+i+'" aria-label="Remove">✕</button></div>';
+function rkey(){return S.course+S.year+S.section}
+function setRoster(list){var a=get("enroll_roster");a[rkey()]=list;put("enroll_roster",a)}
+function renameStudent(o,n){
+  setRoster(roster().map(function(x){return x===o?n:x}));
+  ["enroll_att","enroll_gwa","enroll_task","enroll_sch"].forEach(function(s){
+    var d=get(s),a=S.user+"|"+rkey()+"|"+o,b=S.user+"|"+rkey()+"|"+n;
+    if(d[a]!==undefined&&d[b]===undefined){d[b]=d[a];delete d[a];put(s,d)}
   });
-  $('rows').innerHTML=h;
+  if(S.student===o)S.student=n;
 }
-function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
-$('rows').addEventListener('input',function(e){var t=e.target,i=t.getAttribute('data-i');if(i!==null){subs[i][t.getAttribute('data-f')]=t.value;save('sh_subjects',subs)}});
-$('rows').addEventListener('click',function(e){var d=e.target.getAttribute('data-del');if(d!==null){subs.splice(d,1);save('sh_subjects',subs);renderRows()}});
-$('add').onclick=function(){subs.push({n:'',g:'',u:1});save('sh_subjects',subs);renderRows()};
-$('clr').onclick=function(){subs=[{n:'',g:'',u:1}];save('sh_subjects',subs);renderRows();$('res').textContent='Enter your grades, then press “Compute average”.'};
-$('calc').onclick=function(){
-  var tot=0,w=0,cnt=0;
-  subs.forEach(function(s){var g=parseFloat(s.g),u=parseFloat(s.u);if(isNaN(u)||u<=0)u=1;if(!isNaN(g)){tot+=g*u;w+=u;cnt++}});
-  if(!cnt){$('res').textContent='Please enter at least one grade.';return}
-  var avg=tot/w,ok=avg>=75;
-  $('res').innerHTML='<div class="sub">General Average ('+cnt+' subject'+(cnt>1?'s':'')+')</div><div class="big '+(ok?'pass':'fail')+'">'+avg.toFixed(2)+'</div><div>'+(ok?'✅ Passing':'⚠️ Below passing (75)')+'</div>';
-};
-renderRows();
-
-/* Attendance */
-var att=load('sh_attendance',{});
-var cur=new Date();cur.setDate(1);
-var DOW=['Mon','Tue','Wed','Thu','Fri','Sat'];
-var MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
-function key(){return cur.getFullYear()+'-'+(cur.getMonth()+1)}
-function pad(n){return n<10?'0'+n:''+n}
-function renderCal(){
-  var y=cur.getFullYear(),m=cur.getMonth(),days=new Date(y,m+1,0).getDate(),data=att[key()]||{};
-  $('mt').textContent=MN[m]+' '+y;
-  var h=DOW.map(function(d){return '<div class="dow">'+d+'</div>'}).join('');
-  var first=true,t=new Date(),p=0,a=0;
-  for(var d=1;d<=days;d++){
-    var dt=new Date(y,m,d),wd=dt.getDay();
-    if(wd===0)continue;
-    if(first){for(var b=0;b<wd-1;b++)h+='<div></div>';first=false}
-    var s=data[d]||'',isT=(t.getFullYear()===y&&t.getMonth()===m&&t.getDate()===d);
-    if(s==='p')p++;if(s==='a')a++;
-    h+='<div class="day '+s+(isT?' today':'')+'"><span class="num">'+d+'</span><button class="chk" data-d="'+d+'" aria-label="Check day '+d+'">'+(s==='p'?'✓':s==='a'?'✗':'○')+'</button></div>';
+function roster(){
+  var all=get("enroll_roster"),k=rkey();
+  if(all[k])return all[k].slice().sort();
+  var e=get("enroll_extra")[k]||[],h=0,p=NAMES.slice(),o=[];
+  for(var i=0;i<k.length;i++)h=(h*31+k.charCodeAt(i))>>>0;
+  for(var j=0;j<10;j++)o.push(p.splice((h+j*7)%p.length,1)[0]);
+  all[k]=o.concat(e);put("enroll_roster",all);
+  return all[k].slice().sort();
+}
+function drawNames(){
+  var q=S.q.trim().toLowerCase(),b=document.getElementById("names");
+  var r=roster().filter(function(n){return n.toLowerCase().indexOf(q)>-1});
+  var h=r.map(function(n){
+    if(S.editing===n)return '<div class="nrow"><input id="rin" value="'+esc(n)+'" aria-label="Edit name"><button class="sm" data-save="1">Save</button><button class="sm" data-cancel="1">Cancel</button><button class="sm del" data-del="1">Delete</button></div><p class="err" id="rerr" role="alert"></p>';
+    return '<div class="nrow"><button class="opt" data-n="'+esc(n)+'">'+esc(n)+'</button><button class="sm" data-e="'+esc(n)+'" aria-label="Edit '+esc(n)+'">&#9998; Edit</button></div>'}).join("");
+  if(q&&!roster().some(function(n){return n.toLowerCase()===q}))h+='<button class="opt add" data-add="1">+ Add “'+esc(S.q.trim())+'”</button>';
+  b.innerHTML=h||'<p class="sub">No names yet. Type a name to add it.</p>';
+  b.querySelectorAll("[data-n]").forEach(function(x){x.onclick=function(){S.student=x.dataset.n;S.step=6;render()}});
+  b.querySelectorAll("[data-e]").forEach(function(x){x.onclick=function(){S.editing=x.dataset.e;drawNames();var i=document.getElementById("rin");if(i){i.focus();i.select()}}});
+  var ri=document.getElementById("rin");
+  if(ri){
+    var sv=function(){
+      var v=ri.value.trim().replace(/\s+/g," "),er=document.getElementById("rerr");
+      if(!v){er.textContent="Enter a name.";return}
+      if(v!==S.editing&&roster().some(function(n){return n.toLowerCase()===v.toLowerCase()})){er.textContent="That name is already in this section.";return}
+      if(v!==S.editing)renameStudent(S.editing,v);
+      S.editing=null;drawNames();
+    };
+    b.querySelector("[data-save]").onclick=sv;
+    b.querySelector("[data-cancel]").onclick=function(){S.editing=null;drawNames()};
+    var dl=b.querySelector("[data-del]"),arm=false;
+    dl.onclick=function(){
+      if(!arm){arm=true;dl.textContent="Tap again";return}
+      var o=S.editing;
+      setRoster(roster().filter(function(n){return n!==o}));
+      ["enroll_att","enroll_gwa","enroll_task","enroll_sch"].forEach(function(s){var d=get(s);delete d[S.user+"|"+rkey()+"|"+o];put(s,d)});
+      S.editing=null;drawNames();
+    };
+    ri.onkeydown=function(e){if(e.key==="Enter")sv();if(e.key==="Escape"){S.editing=null;drawNames()}};
   }
-  $('cal').innerHTML=h;
-  var mk=p+a;$('sp').textContent=p;$('sa').textContent=a;$('sd').textContent=mk;$('sr').textContent=mk?Math.round(p/mk*100)+'%':'0%';
+  var a=b.querySelector("[data-add]");
+  if(a)a.onclick=function(){setRoster(roster().concat([S.q.trim()]));S.student=S.q.trim();S.q="";S.step=6;render()};
 }
-function setDay(d,s){var k=key();att[k]=att[k]||{};if(s)att[k][d]=s;else delete att[k][d];save('sh_attendance',att);renderCal()}
-$('cal').addEventListener('click',function(e){
-  var d=e.target.getAttribute('data-d');if(d===null)return;
-  var c=(att[key()]||{})[d]||'';setDay(d,c===''?'p':c==='p'?'a':'');
-});
-$('prev').onclick=function(){cur.setMonth(cur.getMonth()-1);renderCal()};
-$('next').onclick=function(){cur.setMonth(cur.getMonth()+1);renderCal()};
-$('today').onclick=function(){
-  var t=new Date();
-  if(t.getDay()===0){alert('Today is Sunday — no class day on the calendar.');return}
-  cur=new Date(t.getFullYear(),t.getMonth(),1);setDay(t.getDate(),'p');
+
+function drawAtt(){
+  var Y=new Date().getFullYear(),m=S.month,n=new Date(Y,m+1,0).getDate(),first=new Date(Y,m,1).getDay();
+  var all=get("enroll_att"),rec=all[skey()]||{},p=0,a=0,c="";
+  for(var i=0;i<first;i++)c+='<span></span>';
+  for(var d=1;d<=n;d++){
+    var key=Y+"-"+m+"-"+d,v=rec[key],w=new Date(Y,m,d).getDay();
+    if(v==="p")p++;if(v==="a")a++;
+    c+='<button class="day '+(v||"")+(w%6===0?" we":"")+'" data-d="'+key+'" aria-label="'+MO[m]+' '+d+(v==="p"?", present":v==="a"?", absent":", not marked")+'"><small>'+d+'</small><i>'+(v==="p"?"&#10003;":v==="a"?"&#10007;":"")+'</i></button>';
+  }
+  var t=document.getElementById("tool");
+  t.innerHTML='<div class="mrow"><select id="mo" aria-label="Month">'+MO.map(function(x,i){return '<option value="'+i+'"'+(i===m?" selected":"")+'>'+x+'</option>'}).join("")+'</select><b>'+Y+'</b></div><div class="dow">'+["Su","Mo","Tu","We","Th","Fr","Sa"].map(function(x){return '<span>'+x+'</span>'}).join("")+'</div><div class="cal">'+c+'</div><p class="legend"><b class="gp">&#10003;</b> Present (tap once). <b class="ra">&#10007;</b> Absent (tap twice). Tap a third time to clear.</p><p class="stat">Present: '+p+' &nbsp; Absent: '+a+' &nbsp; Rate: '+(p+a?Math.round(p/(p+a)*100):0)+'%</p>';
+  document.getElementById("mo").onchange=function(){S.month=+this.value;drawAtt()};
+  t.querySelectorAll("[data-d]").forEach(function(b){b.onclick=function(){
+    var k=b.dataset.d,cur=rec[k];
+    if(!cur)rec[k]="p";else if(cur==="p")rec[k]="a";else delete rec[k];
+    all[skey()]=rec;put("enroll_att",all);drawAtt();
+  }});
+}
+
+function drawGwa(){
+  var all=get("enroll_gwa"),rows=all[skey()]||[{s:"",u:3,g:""},{s:"",u:3,g:""},{s:"",u:3,g:""}];
+  var t=document.getElementById("tool");
+  t.innerHTML='<p class="sub" style="margin-bottom:8px">Enter units and grades. 1.00 is highest and 5.00 is failed.</p><div id="rows"></div><button class="link" id="addr">+ Add subject</button><div class="gwa" id="res"></div>';
+  var rd=document.getElementById("rows");
+  function calc(){
+    var U=0,W=0;
+    rows.forEach(function(r){var u=parseFloat(r.u),g=parseFloat(r.g);if(u>0&&g>=1&&g<=5){U+=u;W+=u*g}});
+    all[skey()]=rows;put("enroll_gwa",all);
+    var res=document.getElementById("res");
+    if(!U){res.innerHTML='<span>GWA</span><b>--</b><span>Add a grade to see your result.</span>';return}
+    var g=W/U,rm=g<=1.25?"Excellent":g<=1.75?"Very good":g<=2.5?"Good":g<=3?"Passing":"Failed";
+    res.innerHTML='<span>GWA ('+U+' units)</span><b>'+g.toFixed(2)+'</b><span>'+rm+'</span>';
+  }
+  function paint(){
+    rd.innerHTML=rows.map(function(r,i){return '<div class="gr"><input data-i="'+i+'" data-f="s" placeholder="Subject" value="'+esc(r.s)+'" aria-label="Subject"><input data-i="'+i+'" data-f="u" type="number" min="0.5" step="0.5" value="'+esc(r.u)+'" aria-label="Units"><input data-i="'+i+'" data-f="g" type="number" min="1" max="5" step="0.25" placeholder="Grade" value="'+esc(r.g)+'" aria-label="Grade"><button class="x" data-r="'+i+'" aria-label="Remove subject">&times;</button></div>'}).join("");
+    rd.querySelectorAll("input").forEach(function(el){el.oninput=function(){rows[+el.dataset.i][el.dataset.f]=el.value;calc()}});
+    rd.querySelectorAll("[data-r]").forEach(function(b){b.onclick=function(){rows.splice(+b.dataset.r,1);paint();calc()}});
+  }
+  document.getElementById("addr").onclick=function(){rows.push({s:"",u:3,g:""});paint();calc()};
+  paint();calc();
+}
+
+function drawTasks(){
+  var all=get("enroll_task"),list=all[skey()]||[],t=document.getElementById("tool"),n=new Date();
+  var today=n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0");
+  function sv(){all[skey()]=list;put("enroll_task",all)}
+  var done=list.filter(function(x){return x.x}).length;
+  var rows=list.map(function(x,i){return {x:x,i:i}}).sort(function(a,b){return (a.x.x-b.x.x)||String(a.x.d||"9").localeCompare(String(b.x.d||"9"))}).map(function(o){
+    var x=o.x,late=!x.x&&x.d&&x.d<today;
+    return '<div class="task'+(x.x?" fin":"")+'"><input type="checkbox" data-c="'+o.i+'"'+(x.x?" checked":"")+' aria-label="Done"><span>'+esc(x.t)+(x.d?'<small class="'+(late?"late":"")+'">Due '+esc(x.d)+(late?" (late)":"")+'</small>':"")+'</span><button class="x" data-r="'+o.i+'" aria-label="Remove task">&times;</button></div>';
+  }).join("");
+  t.innerHTML='<div class="addrow"><input id="tt" type="text" placeholder="New task, e.g. Math assignment" aria-label="Task"><input id="td" type="date" aria-label="Due date"><button class="sm" id="ta">Add</button></div><p class="stat">'+done+' of '+list.length+' done</p><div>'+(rows||'<p class="sub">No tasks yet. Add assignments and deadlines here.</p>')+'</div>';
+  var ti=document.getElementById("tt");
+  document.getElementById("ta").onclick=function(){var v=ti.value.trim();if(!v)return;list.push({t:v,d:document.getElementById("td").value,x:false});sv();drawTasks();document.getElementById("tt").focus()};
+  ti.onkeydown=function(e){if(e.key==="Enter")document.getElementById("ta").click()};
+  t.querySelectorAll("[data-c]").forEach(function(c){c.onchange=function(){list[+c.dataset.c].x=c.checked;sv();drawTasks()}});
+  t.querySelectorAll("[data-r]").forEach(function(b){b.onclick=function(){list.splice(+b.dataset.r,1);sv();drawTasks()}});
+}
+
+function drawSch(){
+  var all=get("enroll_sch"),list=all[skey()]||[],t=document.getElementById("tool");
+  var D=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],td=D[new Date().getDay()-1];
+  function sv(){all[skey()]=list;put("enroll_sch",all)}
+  var h=D.map(function(d){
+    var it=list.map(function(x,i){return {x:x,i:i}}).filter(function(o){return o.x.d===d}).sort(function(a,b){return a.x.a.localeCompare(b.x.a)});
+    if(!it.length)return "";
+    return '<h3 class="dh'+(d===td?" today":"")+'">'+d+(d===td?" (today)":"")+'</h3>'+it.map(function(o){return '<div class="task"><span><b>'+esc(o.x.s)+'</b><small>'+esc(o.x.a)+' to '+esc(o.x.b)+(o.x.r?", "+esc(o.x.r):"")+'</small></span><button class="x" data-r="'+o.i+'" aria-label="Remove class">&times;</button></div>'}).join("");
+  }).join("");
+  t.innerHTML='<div class="addrow"><select id="sd" aria-label="Day">'+D.map(function(d){return '<option'+(d===td?" selected":"")+'>'+d+'</option>'}).join("")+'</select><input id="ss" type="text" placeholder="Subject" aria-label="Subject"><input id="sa" type="time" value="08:00" aria-label="Start time"><input id="sb" type="time" value="09:00" aria-label="End time"><input id="sr" type="text" placeholder="Room (optional)" aria-label="Room"><button class="sm" id="sadd">Add</button></div><p class="err" id="se" role="alert"></p><div>'+(h||'<p class="sub">No classes yet. Add your first class.</p>')+'</div>';
+  document.getElementById("sadd").onclick=function(){
+    var s=document.getElementById("ss").value.trim(),a=document.getElementById("sa").value,b=document.getElementById("sb").value,er=document.getElementById("se");
+    if(!s||!a||!b){er.textContent="Enter a subject and both times.";return}
+    if(b<=a){er.textContent="End time must be after start time.";return}
+    list.push({d:document.getElementById("sd").value,s:s,a:a,b:b,r:document.getElementById("sr").value.trim()});sv();drawSch();
+  };
+  t.querySelectorAll("[data-r]").forEach(function(b){b.onclick=function(){list.splice(+b.dataset.r,1);sv();drawSch()}});
+}
+
+var LIB={
+BSIT:[["MDN Web Docs","Reference","HTML, CSS and JavaScript guides and references.","https://developer.mozilla.org/"],["freeCodeCamp","Free course","Learn to code with hands-on projects.","https://www.freecodecamp.org/"],["Python Tutorial","Free book","The official Python tutorial.","https://docs.python.org/3/tutorial/"],["Free Programming Books","Book list","A huge list of free programming books.","https://github.com/EbookFoundation/free-programming-books"],["Techopedia Dictionary","Dictionary","IT and computing terms explained.","https://www.techopedia.com/dictionary"]],
+BSEd:[["DepEd","Official","Curriculum guides and learning resources.","https://www.deped.gov.ph/"],["CHED","Official","Higher education policies and standards.","https://ched.gov.ph/"],["ERIC","Database","Education research articles and papers.","https://eric.ed.gov/"],["Edutopia","Reference","Teaching strategies and classroom ideas.","https://www.edutopia.org/"],["Open Textbook Library","Free textbook","Free, peer-reviewed college textbooks.","https://open.umn.edu/opentextbooks/"]],
+BSCrim:[["LawPhil","Laws","Philippine laws, including the Revised Penal Code.","https://lawphil.net/"],["Official Gazette","Official","Official Philippine government publications.","https://www.officialgazette.gov.ph/"],["Philippine National Police","Official","PNP news, units and public information.","https://www.pnp.gov.ph/"],["Cornell Legal Information Institute","Dictionary","Legal encyclopedia (Wex) and law terms.","https://www.law.cornell.edu/wex"],["National Institute of Justice","Database","Criminal justice research and reports.","https://nij.ojp.gov/"],["UNODC","Reference","United Nations crime and drug research.","https://www.unodc.org/"]],
+BSA:[["Department of Agriculture","Official","Programs, news and farming information.","https://www.da.gov.ph/"],["PhilRice","Reference","Rice science and farming technologies.","https://www.philrice.gov.ph/"],["IRRI Rice Knowledge Bank","Free course","Step-by-step rice growing guides.","https://www.knowledgebank.irri.org/"],["FAO","Reference","Global food and agriculture data and reports.","https://www.fao.org/"],["Agricultural Training Institute","Free course","Trainings and learning materials for farmers.","https://ati.da.gov.ph/"]],
+BSN:[["MedlinePlus","Reference","Trusted health topics, drugs and tests.","https://medlineplus.gov/"],["Merriam-Webster Medical","Dictionary","Medical terms and definitions.","https://www.merriam-webster.com/medical"],["NCBI Bookshelf","Free book","Free medical and nursing books online.","https://www.ncbi.nlm.nih.gov/books/"],["Anatomy and Physiology 2e","Free textbook","OpenStax textbook on the human body.","https://openstax.org/details/books/anatomy-and-physiology-2e"],["World Health Organization","Reference","Health guidelines and global data.","https://www.who.int/"],["Professional Regulation Commission","Official","Licensure exam information.","https://www.prc.gov.ph/"]],
+BSBA:[["OpenStax Business","Free textbook","Free textbooks on business subjects.","https://openstax.org/subjects/business"],["Principles of Accounting","Free textbook","OpenStax financial accounting textbook.","https://openstax.org/details/books/principles-financial-accounting"],["Investopedia","Dictionary","Finance and business terms explained.","https://www.investopedia.com/"],["SEC Philippines","Official","Business registration and corporate rules.","https://www.sec.gov.ph/"],["DTI","Official","Trade, industry and MSME resources.","https://www.dti.gov.ph/"]],
+BSCE:[["The Engineering Toolbox","Reference","Formulas, tables and engineering data.","https://www.engineeringtoolbox.com/"],["MIT OpenCourseWare","Free course","Free engineering and math course materials.","https://ocw.mit.edu/"],["Wolfram MathWorld","Dictionary","Math definitions and formulas.","https://mathworld.wolfram.com/"],["Khan Academy","Free course","Math and physics lessons.","https://www.khanacademy.org/"],["DPWH","Official","Philippine public works standards and projects.","https://www.dpwh.gov.ph/"]],
+BSHM:[["Department of Tourism","Official","Philippine tourism programs and standards.","https://www.tourism.gov.ph/"],["UN Tourism","Reference","Global tourism data and reports.","https://www.unwto.org/"],["TESDA","Free course","Skills training, including food and hospitality.","https://www.tesda.gov.ph/"],["BCcampus Open Textbooks","Free textbook","Free textbooks, including hospitality topics.","https://opentextbc.ca/"]],
+BSPsy:[["Psychology 2e","Free textbook","OpenStax introductory psychology textbook.","https://openstax.org/details/books/psychology-2e"],["APA Dictionary of Psychology","Dictionary","Psychology terms from the American Psychological Association.","https://dictionary.apa.org/"],["Simply Psychology","Reference","Theories and studies explained simply.","https://www.simplypsychology.org/"],["NIMH","Reference","Mental health topics and research.","https://www.nimh.nih.gov/"]],
+BSFi:[["BFAR","Official","Philippine fisheries programs and news.","https://www.bfar.da.gov.ph/"],["FAO Fisheries","Reference","Global fisheries and aquaculture data.","https://www.fao.org/fishery/en"],["FishBase","Database","Information on fish species worldwide.","https://www.fishbase.se/"],["SEAFDEC","Reference","Southeast Asian fisheries research.","https://www.seafdec.org/"]],
+ALL:[["Project Gutenberg","Free book","Over 70,000 free ebooks.","https://www.gutenberg.org/"],["Open Library","Free book","Borrow millions of books online.","https://openlibrary.org/"],["Internet Archive","Free book","Free books, texts and media.","https://archive.org/"],["OpenStax","Free textbook","Free college textbooks in many subjects.","https://openstax.org/"],["DOAJ","Database","Free open-access research journals.","https://doaj.org/"]]
 };
-$('reset').onclick=function(){if(confirm('Clear all attendance marks for this month?')){delete att[key()];save('sh_attendance',att);renderCal()}};
-renderCal();
-})();
+
+function drawLib(){
+  var t=document.getElementById("tool"),cn=(COURSES.filter(function(c){return c[0]===S.course})[0]||[])[1]||"";
+  function card(r){return '<div class="book"><div><span class="tag">'+r[1]+'</span><b>'+esc(r[0])+'</b><small>'+esc(r[2])+'</small></div><a class="lnk" href="'+r[3]+'" target="_blank" rel="noopener noreferrer">Open</a></div>'}
+  t.innerHTML='<h3 class="dh">Dictionary</h3><div class="addrow"><input id="dw" type="text" placeholder="Type a word to look up" aria-label="Word to look up"></div><div class="links" id="dl"></div>'+
+  '<h3 class="dh">Search for books</h3><div class="addrow"><input id="bq" type="text" value="'+esc(cn)+'" placeholder="Title, author or topic" aria-label="Book search"></div><div class="links" id="bl"></div>'+
+  '<h3 class="dh">Recommended for '+esc(S.course)+' ('+esc(cn)+')</h3><div>'+(LIB[S.course]||[]).map(card).join("")+'</div>'+
+  '<h3 class="dh">Free libraries for everyone</h3><div>'+LIB.ALL.map(card).join("")+'</div><p class="legend">Links open in a new tab on each site.</p>';
+  var dw=document.getElementById("dw"),bq=document.getElementById("bq");
+  function en(s){return encodeURIComponent(s.trim())}
+  function links(list,q){return list.map(function(x){return q?'<a class="lnk" href="'+x[1]+'" target="_blank" rel="noopener noreferrer">'+x[0]+'</a>':'<span class="lnk off">'+x[0]+'</span>'}).join("")}
+  function paint(){
+    var w=en(dw.value),q=en(bq.value);
+    var d=[["Merriam-Webster","https://www.merriam-webster.com/dictionary/"+w],["Cambridge","https://dictionary.cambridge.org/dictionary/english/"+w],["Wiktionary","https://en.wiktionary.org/wiki/"+w],["English to Filipino","https://translate.google.com/?sl=en&tl=tl&text="+w+"&op=translate"]];
+    if(S.course==="BSN")d.splice(1,0,["Medical dictionary","https://www.merriam-webster.com/medical/"+w]);
+    document.getElementById("dl").innerHTML=links(d,w);
+    document.getElementById("bl").innerHTML=links([["Open Library","https://openlibrary.org/search?q="+q],["Internet Archive","https://archive.org/search?query="+q],["Project Gutenberg","https://www.gutenberg.org/ebooks/search/?query="+q],["Google Books","https://www.google.com/search?tbm=bks&q="+q],["Wikipedia","https://en.wikipedia.org/w/index.php?search="+q]],q);
+  }
+  dw.oninput=paint;bq.oninput=paint;paint();
+}
+
+render();
 </script>
 </body>
 </html>
